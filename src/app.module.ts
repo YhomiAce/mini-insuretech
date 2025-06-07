@@ -1,8 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
+import { APP_PIPE } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { DbModuleModule } from './config/db-module/db-module.module';
+import { InsurtechModule } from './insuretech/insuretech.module';
 
 @Module({
   imports: [
@@ -10,8 +12,15 @@ import { DbModuleModule } from './config/db-module/db-module.module';
       isGlobal: true,
     }),
     DbModuleModule,
+    InsurtechModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
+  ],
 })
 export class AppModule {}
