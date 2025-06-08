@@ -11,7 +11,7 @@ export class PendingPolicyService {
 
   async findByPlanId(planId: number): Promise<PendingPolicy[]> {
     return this.pendingPolicyModel.findAll({
-      where: { 
+      where: {
         planId,
         status: PendingPolicyStatus.UNUSED, // Only show unused pending policies
       },
@@ -52,4 +52,4 @@ export class PendingPolicyService {
 
     return pendingPolicy;
   }
-} 
+}

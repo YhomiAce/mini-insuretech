@@ -11,8 +11,8 @@ export class PendingPolicyController {
   @Get('plan/:planId')
   @ApiOperation({ summary: 'Get all pending policies for a specific plan' })
   @ApiParam({ name: 'planId', description: 'Plan ID', type: 'number' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'List of pending policies for the plan',
     schema: {
       example: {
@@ -26,21 +26,23 @@ export class PendingPolicyController {
             description: null,
             createdAt: '2025-01-01T12:00:00.000Z',
             updatedAt: '2025-01-01T12:00:00.000Z',
-            deletedAt: null
-          }
-        ]
-      }
-    }
+            deletedAt: null,
+          },
+        ],
+      },
+    },
   })
-  async findByPlanId(@Param('planId', ParseIntPipe) planId: number): Promise<PendingPolicy[]> {
+  async findByPlanId(
+    @Param('planId', ParseIntPipe) planId: number,
+  ): Promise<PendingPolicy[]> {
     return this.pendingPolicyService.findByPlanId(planId);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get pending policy details by ID' })
   @ApiParam({ name: 'id', description: 'Pending Policy ID', type: 'number' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Pending policy details retrieved successfully',
     schema: {
       example: {
@@ -53,23 +55,25 @@ export class PendingPolicyController {
           description: null,
           createdAt: '2025-01-01T12:00:00.000Z',
           updatedAt: '2025-01-01T12:00:00.000Z',
-          deletedAt: null
-        }
-      }
-    }
+          deletedAt: null,
+        },
+      },
+    },
   })
-  @ApiResponse({ 
-    status: 404, 
+  @ApiResponse({
+    status: 404,
     description: 'Pending policy not found',
     schema: {
       example: {
         status: false,
         message: 'Pending policy not found',
-        data: null
-      }
-    }
+        data: null,
+      },
+    },
   })
-  async findById(@Param('id', ParseIntPipe) id: number): Promise<PendingPolicy> {
+  async findById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<PendingPolicy> {
     return this.pendingPolicyService.findById(id);
   }
-} 
+}

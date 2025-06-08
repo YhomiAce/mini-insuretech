@@ -45,6 +45,16 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
+      planId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'plans',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

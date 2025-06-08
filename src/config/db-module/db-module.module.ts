@@ -1,7 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { ProductCategory, Product, User, Plan, PendingPolicy, Policy } from '../../models';
+import {
+  ProductCategory,
+  Product,
+  User,
+  Plan,
+  PendingPolicy,
+  Policy,
+} from '../../models';
 
 @Module({
   imports: [

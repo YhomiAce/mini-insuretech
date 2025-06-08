@@ -10,8 +10,8 @@ export class ProductController {
 
   @Get()
   @ApiOperation({ summary: 'Get all insurance products' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'List of all insurance products with their categories',
     schema: {
       example: {
@@ -27,12 +27,12 @@ export class ProductController {
             category: {
               id: 1,
               name: 'Health',
-              description: 'Health insurance products'
-            }
-          }
-        ]
-      }
-    }
+              description: 'Health insurance products',
+            },
+          },
+        ],
+      },
+    },
   })
   async findAll(): Promise<Product[]> {
     return this.productService.findAll();
@@ -41,8 +41,8 @@ export class ProductController {
   @Get(':id')
   @ApiOperation({ summary: 'Get a specific insurance product by ID' })
   @ApiParam({ name: 'id', description: 'Product ID', type: 'number' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Insurance product details',
     schema: {
       example: {
@@ -57,24 +57,26 @@ export class ProductController {
           category: {
             id: 1,
             name: 'Health',
-            description: 'Health insurance products'
-          }
-        }
-      }
-    }
+            description: 'Health insurance products',
+          },
+        },
+      },
+    },
   })
-  @ApiResponse({ 
-    status: 404, 
+  @ApiResponse({
+    status: 404,
     description: 'Product not found',
     schema: {
       example: {
         status: false,
         message: 'Product not found',
-        data: null
-      }
-    }
+        data: null,
+      },
+    },
   })
-  async findById(@Param('id', ParseIntPipe) id: number): Promise<Product | null> {
+  async findById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Product | null> {
     return this.productService.findById(id);
   }
-} 
+}

@@ -1,5 +1,19 @@
-import { Controller, Post, Get, Body, Param, ParseIntPipe, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Param,
+  ParseIntPipe,
+  Query,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiBody,
+} from '@nestjs/swagger';
 import { PlanService } from '../services';
 import { CreatePlanDto } from '../dto';
 import { Plan } from '../models';
@@ -20,13 +34,13 @@ export class PlanController {
         value: {
           userId: 1,
           productId: 1,
-          quantity: 1
-        }
-      }
-    }
+          quantity: 1,
+        },
+      },
+    },
   })
-  @ApiResponse({ 
-    status: 201, 
+  @ApiResponse({
+    status: 201,
     description: 'Plan purchased successfully',
     schema: {
       example: {
@@ -43,27 +57,27 @@ export class PlanController {
             id: 1,
             name: 'John Doe',
             email: 'john@example.com',
-            walletBalance: '90000.00'
+            walletBalance: '90000.00',
           },
           product: {
             id: 1,
             name: 'Optimal care mini',
-            price: '10000.00'
-          }
-        }
-      }
-    }
+            price: '10000.00',
+          },
+        },
+      },
+    },
   })
-  @ApiResponse({ 
-    status: 400, 
+  @ApiResponse({
+    status: 400,
     description: 'Insufficient wallet balance or invalid request',
     schema: {
       example: {
         status: false,
         message: 'Insufficient wallet balance',
-        data: null
-      }
-    }
+        data: null,
+      },
+    },
   })
   async createPlan(@Body() createPlanDto: CreatePlanDto): Promise<Plan> {
     return this.planService.createPlan(createPlanDto);
@@ -72,8 +86,8 @@ export class PlanController {
   @Get(':id')
   @ApiOperation({ summary: 'Get plan details by ID' })
   @ApiParam({ name: 'id', description: 'Plan ID', type: 'number' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Plan details retrieved successfully',
     schema: {
       example: {
@@ -89,17 +103,17 @@ export class PlanController {
           user: {
             id: 1,
             name: 'John Doe',
-            email: 'john@example.com'
+            email: 'john@example.com',
           },
           product: {
             id: 1,
             name: 'Optimal care mini',
-            price: '10000.00'
+            price: '10000.00',
           },
-          pendingPolicies: []
-        }
-      }
-    }
+          pendingPolicies: [],
+        },
+      },
+    },
   })
   async findById(@Param('id', ParseIntPipe) id: number): Promise<Plan | null> {
     return this.planService.findById(id);
@@ -108,8 +122,8 @@ export class PlanController {
   @Get('user/:userId')
   @ApiOperation({ summary: 'Get all plans for a specific user' })
   @ApiParam({ name: 'userId', description: 'User ID', type: 'number' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'User plans retrieved successfully',
     schema: {
       example: {
@@ -122,38 +136,15 @@ export class PlanController {
             productId: 1,
             quantity: 1,
             totalAmount: '10000.00',
-            description: 'Optimal care mini x1'
-          }
-        ]
-      }
-    }
+            description: 'Optimal care mini x1',
+          },
+        ],
+      },
+    },
   })
-  async findByUserId(@Param('userId', ParseIntPipe) userId: number): Promise<Plan[]> {
+  async findByUserId(
+    @Param('userId', ParseIntPipe) userId: number,
+  ): Promise<Plan[]> {
     return this.planService.findByUserId(userId);
-  }
-
-  @Get('debug/:userId/:productId')
-  async debugUserProduct(@Param('userId') userId: string, @Param('productId') productId: string) {
-    const user = await this.planService.findUserById(parseInt(userId));
-    const product = await this.planService.findProductById(parseInt(productId));
-    
-    return {
-      user: user ? {
-        id: user.id,
-        name: user.name,
-        walletBalance: user.walletBalance,
-        walletBalanceType: typeof user.walletBalance,
-        walletBalanceString: user.walletBalance?.toString(),
-        fullUser: user,
-      } : null,
-      product: product ? {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        priceType: typeof product.price,
-        priceString: product.price?.toString(),
-        fullProduct: product,
-      } : null
-    };
   }
 }

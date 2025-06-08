@@ -3,7 +3,12 @@ import { getModelToken } from '@nestjs/sequelize';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 import { PlanService } from './plan.service';
-import { Plan, Product, User, PendingPolicy, PendingPolicyStatus } from '../models';
+import {
+  Plan,
+  Product,
+  User,
+  PendingPolicy,
+} from '../models';
 import { CreatePlanDto } from '../dto';
 
 describe('PlanService', () => {
@@ -121,14 +126,16 @@ describe('PlanService', () => {
       expect(mockTransaction.commit).toHaveBeenCalled();
       expect(mockUser.update).toHaveBeenCalledWith(
         { walletBalance: 80000 },
-        { transaction: mockTransaction }
+        { transaction: mockTransaction },
       );
     });
 
     it('should throw NotFoundException if user not found', async () => {
       mockUserModel.findByPk.mockResolvedValue(null);
 
-      await expect(service.createPlan(createPlanDto)).rejects.toThrow(NotFoundException);
+      await expect(service.createPlan(createPlanDto)).rejects.toThrow(
+        NotFoundException,
+      );
       expect(mockTransaction.rollback).toHaveBeenCalled();
     });
 
@@ -136,7 +143,9 @@ describe('PlanService', () => {
       mockUserModel.findByPk.mockResolvedValue(mockUser);
       mockProductModel.findByPk.mockResolvedValue(null);
 
-      await expect(service.createPlan(createPlanDto)).rejects.toThrow(NotFoundException);
+      await expect(service.createPlan(createPlanDto)).rejects.toThrow(
+        NotFoundException,
+      );
       expect(mockTransaction.rollback).toHaveBeenCalled();
     });
 
@@ -145,8 +154,10 @@ describe('PlanService', () => {
       mockUserModel.findByPk.mockResolvedValue(poorUser);
       mockProductModel.findByPk.mockResolvedValue(mockProduct);
 
-      await expect(service.createPlan(createPlanDto)).rejects.toThrow(BadRequestException);
+      await expect(service.createPlan(createPlanDto)).rejects.toThrow(
+        BadRequestException,
+      );
       expect(mockTransaction.rollback).toHaveBeenCalled();
     });
   });
-}); 
+});

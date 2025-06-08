@@ -1,4 +1,12 @@
-import { Table, Column, Model, DataType, HasMany, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  HasMany,
+  PrimaryKey,
+  AutoIncrement,
+} from 'sequelize-typescript';
 import { Product } from './product.model';
 
 @Table({
@@ -6,10 +14,6 @@ import { Product } from './product.model';
   timestamps: true,
 })
 export class ProductCategory extends Model<ProductCategory> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
-  declare id: number;
 
   @Column({
     type: DataType.STRING,
@@ -26,4 +30,4 @@ export class ProductCategory extends Model<ProductCategory> {
 
   @HasMany(() => Product)
   products: Product[];
-} 
+}

@@ -41,7 +41,7 @@ This API implements a complete insurance management system with the following en
 
 1. **Clone the repository**
 ```bash
-git clone <repository-url>
+git clone https://github.com/YhomiAce/mini-insuretech
 cd insuretech
 ```
 
@@ -55,7 +55,17 @@ yarn install
 docker-compose up -d
 ```
 
-4. **Start the application**
+4. **Run Migration**
+```bash
+yarn db:migrate
+```
+
+5. **Seed database**
+```bash
+yarn db:seed
+```
+
+6. **Start the application**
 ```bash
 # Development mode with hot reload
 yarn start:dev
@@ -66,10 +76,12 @@ yarn start:prod
 
 The API will be available at `http://localhost:3000`
 
+The Swagger docs will be available at `http://localhost:3000/api`
+
 ### Database Setup
 
 The application automatically:
-- Creates database tables using Sequelize synchronization
+- Creates database tables using Sequelize migration
 - Seeds initial data including:
   - Product categories (Health, Auto)
   - Insurance products with pricing
@@ -249,7 +261,7 @@ src/
 ├── services/            # Business logic
 ├── models/              # Database models
 ├── dto/                 # Data transfer objects
-├── seeders/             # Database seeders
+├── sequelize/           # Sequelize Migrations and seeders
 ├── config/              # Configuration modules
 └── insuretech/          # Main module organization
 ```
@@ -303,25 +315,3 @@ DB_NAME=insuretech
 - Indexed foreign keys for optimal query performance
 - Connection pooling for database efficiency
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Ensure all tests pass
-6. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 📞 Support
-
-For questions or support, please contact:
-- Email: [Your Email]
-- Phone: 08160161074
-
----
-
-**Built with ❤️ for MyCoverGenius Backend Engineer Assessment**

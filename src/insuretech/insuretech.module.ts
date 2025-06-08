@@ -1,8 +1,25 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { ProductCategory, Product, User, Plan, PendingPolicy, Policy } from '../models';
-import { ProductService, PlanService, PendingPolicyService, PolicyService } from '../services';
-import { ProductController, PlanController, PendingPolicyController, PolicyController } from '../controllers';
+import {
+  ProductCategory,
+  Product,
+  User,
+  Plan,
+  PendingPolicy,
+  Policy,
+} from '../models';
+import {
+  ProductService,
+  PlanService,
+  PendingPolicyService,
+  PolicyService,
+} from '../services';
+import {
+  ProductController,
+  PlanController,
+  PendingPolicyController,
+  PolicyController,
+} from '../controllers';
 
 @Module({
   imports: [
@@ -21,17 +38,7 @@ import { ProductController, PlanController, PendingPolicyController, PolicyContr
     PendingPolicyController,
     PolicyController,
   ],
-  providers: [
-    ProductService,
-    PlanService,
-    PendingPolicyService,
-    PolicyService,
-  ],
-  exports: [
-    ProductService,
-    PlanService,
-    PendingPolicyService,
-    PolicyService,
-  ],
+  providers: [ProductService, PlanService, PendingPolicyService, PolicyService],
+  exports: [ProductService, PlanService, PendingPolicyService, PolicyService],
 })
-export class InsurtechModule {} 
+export class InsurtechModule {}

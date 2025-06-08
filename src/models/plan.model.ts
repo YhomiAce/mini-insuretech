@@ -1,4 +1,14 @@
-import { Table, Column, Model, DataType, BelongsTo, ForeignKey, HasMany, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  BelongsTo,
+  ForeignKey,
+  HasMany,
+  PrimaryKey,
+  AutoIncrement,
+} from 'sequelize-typescript';
 import { User } from './user.model';
 import { Product } from './product.model';
 import { PendingPolicy } from './pending-policy.model';
@@ -8,11 +18,6 @@ import { PendingPolicy } from './pending-policy.model';
   timestamps: true,
 })
 export class Plan extends Model<Plan> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
-  declare id: number;
-
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
@@ -36,6 +41,10 @@ export class Plan extends Model<Plan> {
   @Column({
     type: DataType.DECIMAL(10, 2),
     allowNull: false,
+    get() {
+      const rawValue = this.getDataValue('totalAmount');
+      return rawValue ? +rawValue : 0;
+    },
   })
   totalAmount: number;
 
@@ -53,4 +62,4 @@ export class Plan extends Model<Plan> {
 
   @HasMany(() => PendingPolicy)
   pendingPolicies: PendingPolicy[];
-} 
+}

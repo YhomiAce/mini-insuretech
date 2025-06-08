@@ -15,13 +15,13 @@ describe('Insuretech API (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     app.useGlobalPipes(new ValidationPipe());
-    
+
     sequelize = moduleFixture.get<Sequelize>(Sequelize);
-    
+
     await app.init();
-    
+
     // Wait for database to be ready and seeded
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
   });
 
   afterAll(async () => {
@@ -36,7 +36,7 @@ describe('Insuretech API (e2e)', () => {
         .expect((res) => {
           expect(Array.isArray(res.body)).toBe(true);
           expect(res.body.length).toBeGreaterThan(0);
-          
+
           const product = res.body[0];
           expect(product).toHaveProperty('id');
           expect(product).toHaveProperty('name');
@@ -134,7 +134,7 @@ describe('Insuretech API (e2e)', () => {
       const response = await request(app.getHttpServer())
         .post('/plans')
         .send(createPlanDto);
-      
+
       planId = response.body.id;
     });
 
@@ -145,7 +145,7 @@ describe('Insuretech API (e2e)', () => {
         .expect((res) => {
           expect(Array.isArray(res.body)).toBe(true);
           expect(res.body).toHaveLength(3);
-          
+
           const pendingPolicy = res.body[0];
           expect(pendingPolicy).toHaveProperty('id');
           expect(pendingPolicy).toHaveProperty('planId', planId);
@@ -171,8 +171,9 @@ describe('Insuretech API (e2e)', () => {
         .post('/plans')
         .send(createPlanDto);
 
-      const pendingPoliciesResponse = await request(app.getHttpServer())
-        .get(`/pending-policies/plan/${planResponse.body.id}`);
+      const pendingPoliciesResponse = await request(app.getHttpServer()).get(
+        `/pending-policies/plan/${planResponse.body.id}`,
+      );
 
       pendingPolicyId = pendingPoliciesResponse.body[0].id;
     });
@@ -208,7 +209,9 @@ describe('Insuretech API (e2e)', () => {
         .send(activatePolicyDto)
         .expect(409)
         .expect((res) => {
-          expect(res.body.message).toContain('User already has a policy for this product');
+          expect(res.body.message).toContain(
+            'User already has a policy for this product',
+          );
         });
     });
   });
@@ -220,7 +223,7 @@ describe('Insuretech API (e2e)', () => {
         .expect(200)
         .expect((res) => {
           expect(Array.isArray(res.body)).toBe(true);
-          
+
           if (res.body.length > 0) {
             const policy = res.body[0];
             expect(policy).toHaveProperty('id');
@@ -234,20 +237,21 @@ describe('Insuretech API (e2e)', () => {
 
     it('should filter policies by plan', async () => {
       // First get a plan ID
-      const plansResponse = await request(app.getHttpServer())
-        .get('/plans/user/1');
-      
+      const plansResponse = await request(app.getHttpServer()).get(
+        '/plans/user/1',
+      );
+
       if (plansResponse.body.length > 0) {
         const planId = plansResponse.body[0].id;
-        
+
         return request(app.getHttpServer())
           .get(`/policies?planId=${planId}`)
           .expect(200)
           .expect((res) => {
             expect(Array.isArray(res.body)).toBe(true);
-            
+
             if (res.body.length > 0) {
-              res.body.forEach(policy => {
+              res.body.forEach((policy) => {
                 expect(policy.planId).toBe(planId);
               });
             }
@@ -255,4 +259,4 @@ describe('Insuretech API (e2e)', () => {
       }
     });
   });
-}); 
+});

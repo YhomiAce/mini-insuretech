@@ -1,6 +1,16 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Plan, Product, User, PendingPolicy, PendingPolicyStatus } from '../models';
+import {
+  Plan,
+  Product,
+  User,
+  PendingPolicy,
+  PendingPolicyStatus,
+} from '../models';
 import { CreatePlanDto } from '../dto';
 import { Sequelize } from 'sequelize-typescript';
 
@@ -39,26 +49,24 @@ export class PlanService {
 
       // Calculate total amount
       const productPrice = parseFloat(
-        (product as any).dataValues?.price || 
-        product.price || 
-        '0'
+        (product as any).dataValues?.price || product.price || '0',
       );
       const userBalance = parseFloat(
-        (user as any).dataValues?.walletBalance || 
-        user.walletBalance || 
-        '0'
+        (user as any).dataValues?.walletBalance || user.walletBalance || '0',
       );
       const totalAmount = productPrice * quantity;
 
       // Check if user has sufficient wallet balance
       if (userBalance < totalAmount) {
-        throw new BadRequestException(`Insufficient wallet balance. Required: ${totalAmount}, Available: ${userBalance}`);
+        throw new BadRequestException(
+          `Insufficient wallet balance. Required: ${totalAmount}, Available: ${userBalance}`,
+        );
       }
 
       // Deduct from user's wallet
       await user.update(
         { walletBalance: userBalance - totalAmount },
-        { transaction }
+        { transaction },
       );
 
       // Create plan
@@ -69,8 +77,8 @@ export class PlanService {
           quantity,
           totalAmount,
           description: description || '',
-        } as any,
-        { transaction }
+        } as Plan,
+        { transaction },
       );
 
       // Create pending policies (slots)
@@ -82,7 +90,9 @@ export class PlanService {
         });
       }
 
-      await this.pendingPolicyModel.bulkCreate(pendingPolicies, { transaction });
+      await this.pendingPolicyModel.bulkCreate(pendingPolicies, {
+        transaction,
+      });
 
       await transaction.commit();
 
@@ -139,4 +149,4 @@ export class PlanService {
   async findProductById(id: number): Promise<Product | null> {
     return this.productModel.findByPk(id);
   }
-} 
+}

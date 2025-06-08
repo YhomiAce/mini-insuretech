@@ -9,16 +9,16 @@ export class AppController {
 
   @Get()
   @ApiOperation({ summary: 'Get API welcome message' })
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Welcome message',
     schema: {
       example: {
         status: true,
         message: 'Request successful',
-        data: 'Hello World!'
-      }
-    }
+        data: 'Hello World!',
+      },
+    },
   })
   getHello(): string {
     return this.appService.getHello();

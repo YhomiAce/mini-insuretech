@@ -1,4 +1,14 @@
-import { Table, Column, Model, DataType, BelongsTo, ForeignKey, PrimaryKey, AutoIncrement, BeforeCreate } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  BelongsTo,
+  ForeignKey,
+  PrimaryKey,
+  AutoIncrement,
+  BeforeCreate,
+} from 'sequelize-typescript';
 import { User } from './user.model';
 import { Product } from './product.model';
 import { Plan } from './plan.model';
@@ -9,11 +19,6 @@ import { PendingPolicy } from './pending-policy.model';
   timestamps: true,
 })
 export class Policy extends Model<Policy> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
-  declare id: number;
-
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -42,7 +47,12 @@ export class Policy extends Model<Policy> {
   })
   pendingPolicyId: number;
 
-
+  @ForeignKey(() => Plan)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  planId: number;
 
   @BelongsTo(() => User)
   user: User;
@@ -53,11 +63,16 @@ export class Policy extends Model<Policy> {
   @BelongsTo(() => PendingPolicy)
   pendingPolicy: PendingPolicy;
 
+  @BelongsTo(() => Plan)
+  plan: Plan;
+
   @BeforeCreate
   static generatePolicyNumber(instance: Policy) {
     // Generate a unique policy number
     const timestamp = Date.now().toString();
-    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+    const random = Math.floor(Math.random() * 10000)
+      .toString()
+      .padStart(4, '0');
     instance.policyNumber = `POL-${timestamp}-${random}`;
   }
-} 
+}

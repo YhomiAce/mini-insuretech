@@ -1,4 +1,13 @@
-import { Table, Column, Model, DataType, BelongsTo, ForeignKey, PrimaryKey, AutoIncrement } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  BelongsTo,
+  ForeignKey,
+  PrimaryKey,
+  AutoIncrement,
+} from 'sequelize-typescript';
 import { Plan } from './plan.model';
 
 export enum PendingPolicyStatus {
@@ -12,11 +21,6 @@ export enum PendingPolicyStatus {
   paranoid: true, // Enables soft delete
 })
 export class PendingPolicy extends Model<PendingPolicy> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.INTEGER)
-  declare id: number;
-
   @ForeignKey(() => Plan)
   @Column({
     type: DataType.INTEGER,
@@ -39,4 +43,4 @@ export class PendingPolicy extends Model<PendingPolicy> {
 
   @BelongsTo(() => Plan)
   plan: Plan;
-} 
+}
